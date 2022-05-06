@@ -1,1 +1,35 @@
-<p>login-page works!</p>
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Login to Admin Panel</h2>
+
+    <div class="alert alert-danger" *ngIf="auth.error$ | async as error">
+        {{error}}
+    </div>
+
+    <div class="form-control" [ngClass]="{invalid: email.touched && email.invalid}">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+        <div class="validation" *ngIf="email.touched && email.invalid">
+            <small *ngIf="email.errors?.['required']">
+                Field is required
+            </small>
+            <small *ngIf="email.errors?.['email']">
+                Field email must be an email
+            </small>
+        </div>
+    </div>
+
+    <div class="form-control" [ngClass]="{invalid: password.touched && password.invalid}">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password">
+        <div class="validation" *ngIf="password.touched && password.invalid">
+            <small *ngIf="password.errors?.['required']">
+                Field is required
+            </small>
+            <small *ngIf="password.errors?.['minlength']">
+                Min length is {{ password.errors?.['minlength'].requiredLength }} characters
+            </small>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || submitted">Login</button>
+</form>
