@@ -15,3 +15,11 @@ export interface FbAuthResponse {
     refreshToken: string
     registered: boolean
 }
+
+export interface Post {
+    id?: string
+    title: string
+    author: string
+    text: string
+    date: Date
+}
