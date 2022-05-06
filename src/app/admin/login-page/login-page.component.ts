@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { User } from 'src/app/shared/interfaces';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -13,11 +13,19 @@ export class LoginPageComponent {
 
     form: FormGroup
     submitted = false
+    message: string = ''
 
     constructor(
         public auth: AuthService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {
+        this.route.queryParams.subscribe((params: Params) => {
+            if (params['loginAgain']) {
+                this.message = 'Session expired, please sing in again'
+            }
+        })
+
         this.form = new FormGroup({
             email: new FormControl(null, [
                 Validators.required,
