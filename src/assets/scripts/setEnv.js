@@ -45,7 +45,8 @@ export const firebaseConfig = {
 
 export const environment = {
     production: ${isProduction},
-    apiKey: '${process.env.FIREBASE_API_KEY}'
+    apiKey: '${process.env.FIREBASE_API_KEY}',
+    fbDbUrl: '${process.env.FIREBASE_DB_URL}'
 }
 `
 

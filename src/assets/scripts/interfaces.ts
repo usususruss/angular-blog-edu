@@ -1,6 +1,7 @@
 export interface Environment {
-    apiKey: string,
+    apiKey: string
     production: boolean
+    fbDbUrl: string
 }
 
 // For setting up Firebase SDK, if need in future

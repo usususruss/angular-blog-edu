@@ -22,6 +22,9 @@ export class LoginPageComponent {
     ) {
         this.route.queryParams.subscribe((params: Params) => {
             if (params['loginAgain']) {
+                this.message = 'Please sing in again'
+            }
+            if (params['authFailed']) {
                 this.message = 'Session expired, please sing in again'
             }
         })
