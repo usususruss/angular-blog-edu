@@ -11,8 +11,9 @@ import { PostsService } from 'src/app/shared/posts.service';
 export class DashboardPageComponent implements OnInit, OnDestroy {
 
     posts: Post[] = []
-    pSub!: Subscription
     searchStr = ''
+    pSub!: Subscription
+    dSub: Map<string, Subscription> = new Map()
 
     constructor(private postsService: PostsService) {}
 
@@ -24,7 +25,16 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
         if (this.pSub) {
             this.pSub.unsubscribe()
         }
+        if (this.dSub.size) {
+            this.dSub.forEach(sub => sub.unsubscribe())
+            this.dSub.clear()
+        }
     }
 
-    remove(id: string | undefined) {}
+    remove(id: string | undefined) {
+        const sub = this.postsService.remove(id as string).subscribe(() => {
+            this.posts = this.posts.filter(post => post.id !== id)
+        })
+        this.dSub.set(id as string, sub)
+    }
 }

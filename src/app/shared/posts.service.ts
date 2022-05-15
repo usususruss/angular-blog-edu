@@ -27,4 +27,8 @@ export class PostsService {
                     .map(id => ({ ...response[id], id, date: new Date(response[id].date) }))
             }))
     }
+
+    remove(id: string): Observable<void> {
+        return this.http.delete<void>(`${environment.fbDbUrl}/posts/${id}.json`)
+    }
 }
