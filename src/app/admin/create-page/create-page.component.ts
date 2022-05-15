@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Post } from 'src/app/shared/interfaces';
 import { PostsService } from 'src/app/shared/posts.service';
+import { AlertService } from '../shared/services/alert.service';
 
 @Component({
     selector: 'app-create-page',
@@ -12,7 +13,10 @@ export class CreatePageComponent {
 
     form: FormGroup
 
-    constructor(private postsService: PostsService) {
+    constructor(
+        private postsService: PostsService,
+        private alertService: AlertService
+    ) {
         this.form = new FormGroup({
             title: new FormControl(null, Validators.required),
             author: new FormControl(null, Validators.required),
@@ -42,6 +46,7 @@ export class CreatePageComponent {
 
         this.postsService.create(post).subscribe(() => {
             this.form.reset()
+            this.alertService.success('New post created!')
         })
     }
 }

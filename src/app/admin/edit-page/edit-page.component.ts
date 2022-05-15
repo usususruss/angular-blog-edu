@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { Post } from 'src/app/shared/interfaces';
 import { PostsService } from 'src/app/shared/posts.service';
+import { AlertService } from '../shared/services/alert.service';
 
 @Component({
     selector: 'app-edit-page',
@@ -18,7 +19,11 @@ export class EditPageComponent implements OnInit, OnDestroy {
 
     uSub?: Subscription
 
-    constructor(private route: ActivatedRoute, private postsService: PostsService) {}
+    constructor(
+        private route: ActivatedRoute,
+        private postsService: PostsService,
+        private alertService: AlertService
+    ) {}
 
     get title() {
         return this.form.get('title') as FormControl
@@ -44,10 +49,6 @@ export class EditPageComponent implements OnInit, OnDestroy {
         }
     }
 
-    private unlock = () => {
-        this.submitted = false
-    }
-
     submit() {
         if (this.form.invalid) {
             return
@@ -59,6 +60,12 @@ export class EditPageComponent implements OnInit, OnDestroy {
             ...this.post,
             text: this.form.value.text,
             title: this.form.value.title,
-        }).subscribe({ next: this.unlock, error: this.unlock })
+        }).subscribe({
+            next: () => {
+                this.submitted = false
+                this.alertService.success('Post was updated!')
+            },
+            error: () => { this.submitted = false }
+        })
     }
 }
